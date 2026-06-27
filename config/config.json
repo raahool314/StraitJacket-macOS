@@ -1,0 +1,10 @@
+{
+  "appPollSeconds" : 2,
+  "childUsername" : "child",
+  "feedUpdateHours" : 24,
+  "reassertSeconds" : 30,
+  "upstreamDNS" : [
+    "1.1.1.1",
+    "8.8.8.8"
+  ]
+}

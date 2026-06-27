@@ -1,0 +1,8 @@
+# Apps to block for the child account — one entry per line.
+# An entry may be:
+#   - a bundle identifier   e.g. com.valvesoftware.steam
+#   - an .app path          e.g. /Applications/Steam.app
+#   - a bare executable name e.g. steam
+# Edit with: sudo parentctl block-app <entry> / unblock-app <entry>
+
+# com.valvesoftware.steam

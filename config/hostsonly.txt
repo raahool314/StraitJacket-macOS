@@ -1,0 +1,3 @@
+# Domains applied to the DNS sinkhole AND /etc/hosts but kept separate from the
+# curated blocklist for clarity (e.g. domains where IP-level blocking would risk
+# collateral damage). One domain per line.

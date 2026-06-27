@@ -1,0 +1,6 @@
+# Remote blocklist feeds — one URL per line. Downloaded at startup and every
+# config.feedUpdateHours. Plain domain lists and hosts-file format both work.
+# These feed the DNS sinkhole only (not /etc/hosts).
+
+# StevenBlack — adult-only hosts list (~77k domains)
+https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts

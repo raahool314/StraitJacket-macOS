@@ -1,0 +1,21 @@
+# StraitJacket curated blocklist — one domain per line.
+# These are mirrored into BOTH the DNS sinkhole and /etc/hosts.
+# The www. variant is added automatically. Lines starting with # are ignored.
+# Edit with: sudo parentctl add-domain <domain> / remove-domain <domain>
+
+# --- Social media ---
+facebook.com
+instagram.com
+tiktok.com
+snapchat.com
+x.com
+twitter.com
+reddit.com
+
+# --- Streaming / video ---
+youtube.com
+netflix.com
+twitch.tv
+
+# --- Example placeholder (safe to remove) ---
+# example.com

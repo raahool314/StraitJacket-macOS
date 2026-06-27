@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.straitjacket.mac</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/sbin/parentd</string>
+    </array>
+
+    <!-- Start at boot and keep it alive: relaunch if it ever exits. -->
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+
+    <key>StandardOutPath</key>
+    <string>/Library/Logs/StraitJacket/parentd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Library/Logs/StraitJacket/parentd.log</string>
+</dict>
+</plist>
