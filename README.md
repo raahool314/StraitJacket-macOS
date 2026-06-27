@@ -66,6 +66,10 @@ sudo ./uninstall.sh --purge   # also deletes the policy files
 - **DNS-over-HTTPS** bypasses the sinkhole. Browsers with "Secure DNS"/DoH
   enabled (Chrome, Firefox) resolve names themselves. Mitigate by disabling DoH
   in the child's browser and/or adding known DoH endpoints to the blocklist.
+- **Connection coalescing** lets Safari (WebKit) and Chromium browsers reach a
+  blocked `*.google.com` subdomain over an open connection to an allowed one,
+  bypassing per-subdomain DNS blocks. The child account is therefore restricted
+  to **Firefox**, which honors the blocks — see [docs/browser-policy.md](docs/browser-policy.md).
 - **VPNs / proxies** tunnel around DNS and hosts filtering entirely.
 - **SIP-protected system apps** (`/System`) can't be ACL-blocked — they rely on
   the poll-and-kill layer only.

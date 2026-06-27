@@ -1,8 +1,71 @@
-# Apps to block for the child account — one entry per line.
-# An entry may be:
-#   - a bundle identifier   e.g. com.valvesoftware.steam
-#   - an .app path          e.g. /Applications/Steam.app
-#   - a bare executable name e.g. steam
+# StraitJacket application blocklist — one entry per line.
+# Each entry may be a bundle id (com.google.Chrome), an .app path
+# (/Applications/Google Chrome.app), or a bare executable name (steam).
+# Blocked apps owned by the child are killed within ~2s (poll-and-kill), and a
+# deny-execute ACL is applied where possible (non-SIP apps).
 # Edit with: sudo parentctl block-app <entry> / unblock-app <entry>
 
+# ============================================================
+# Web browsers — BLOCK EVERYTHING EXCEPT FIREFOX
+# ------------------------------------------------------------
+# WHY: per-subdomain DNS/hosts blocking is defeated by HTTP/2 connection
+# coalescing. Safari (WebKit) and Chrome/Edge/Brave/etc. (Chromium) reuse an
+# existing TLS connection to an ALLOWED Google host (e.g. play.google.com) to
+# fetch a BLOCKED one (e.g. news.google.com) over the same socket — Google's
+# wildcard cert covers both, so no DNS lookup happens and the sinkhole/hosts
+# layers are never consulted. Firefox re-checks DNS and honors the block, so we
+# standardize the child on Firefox and block the coalescing browsers.
+# See docs/browser-policy.md for the full rationale.
+#
+# NOTE: org.mozilla.firefox is intentionally NOT listed (it is the allowed
+# browser). Do not add a bare "firefox" exec-name rule — Tor Browser and other
+# Firefox forks also run an executable named "firefox"; they are blocked here by
+# their own bundle ids instead.
+# ============================================================
+
+# --- Apple Safari (SIP-protected: blocked via poll-and-kill, not ACL) ---
+com.apple.Safari
+com.apple.SafariTechnologyPreview
+
+# --- Google Chrome ---
+com.google.Chrome
+com.google.Chrome.beta
+com.google.Chrome.canary
+com.google.Chrome.dev
+
+# --- Chromium / Microsoft Edge ---
+org.chromium.Chromium
+com.microsoft.edgemac
+com.microsoft.edgemac.Beta
+com.microsoft.edgemac.Dev
+com.microsoft.edgemac.Canary
+
+# --- Brave ---
+com.brave.Browser
+com.brave.Browser.beta
+com.brave.Browser.nightly
+
+# --- Opera ---
+com.operasoftware.Opera
+com.operasoftware.OperaGX
+com.operasoftware.OperaDeveloper
+
+# --- Other Chromium-based ---
+com.vivaldi.Vivaldi
+company.thebrowser.Browser
+com.naver.Whale
+ru.yandex.desktop.yandex-browser
+com.coccoc.Coccoc
+com.duckduckgo.macos.browser
+
+# --- Other WebKit-based ---
+com.kagi.kagimacOS
+
+# --- Tor Browser (Firefox fork; block by bundle id, NOT exec name) ---
+org.torproject.torbrowser
+
+# ============================================================
+# Other apps (examples — uncomment / add as needed)
+# ============================================================
 # com.valvesoftware.steam
+# steam
