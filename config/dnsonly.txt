@@ -1,0 +1,14 @@
+# DNS-only blocklist — one domain per line.
+# These are blocked at the DNS sinkhole ONLY and are deliberately NOT written to
+# /etc/hosts. A "www." variant is added automatically. Matching is exact.
+#
+# Use this for CNAME-collision cases: when you want to block a parent domain but
+# keep a sibling/subdomain that is a CNAME to it reachable. An /etc/hosts entry
+# applies to the whole CNAME chain (so it would break the sibling), but a
+# sinkhole entry only answers a DIRECT query for the parent.
+#
+# Example: lite.duckduckgo.com is a CNAME to duckduckgo.com. We want
+# duckduckgo.com blocked but lite.duckduckgo.com open, so duckduckgo.com lives
+# here (DNS-only) instead of in hostsonly.txt.
+
+duckduckgo.com

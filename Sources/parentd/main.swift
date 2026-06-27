@@ -21,6 +21,7 @@ let config = Config.load()
 let initialBlocklist = DomainBlocklist()
 if let t = try? String(contentsOfFile: Paths.blocklistFile, encoding: .utf8) { initialBlocklist.load(linesFrom: t) }
 if let t = try? String(contentsOfFile: Paths.hostsOnlyFile, encoding: .utf8) { initialBlocklist.load(linesFrom: t) }
+if let t = try? String(contentsOfFile: Paths.dnsOnlyFile, encoding: .utf8) { initialBlocklist.load(linesFrom: t) }
 if let t = try? String(contentsOfFile: Paths.feedCacheFile, encoding: .utf8) { initialBlocklist.load(linesFrom: t, addWWW: false) }
 
 let sinkhole = DNSSinkhole(blocklist: initialBlocklist, upstreamServers: config.upstreamDNS)

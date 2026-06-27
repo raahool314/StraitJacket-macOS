@@ -42,7 +42,7 @@ mkdir -p "$SUPPORT" "$LOGDIR"
 chown root:wheel "$SUPPORT" "$LOGDIR"
 chmod 755 "$SUPPORT" "$LOGDIR"
 # Copy defaults only if absent — never overwrite the parent's edits.
-for f in config.json blocklist.txt hostsonly.txt appblock.txt feeds.txt; do
+for f in config.json blocklist.txt hostsonly.txt dnsonly.txt appblock.txt feeds.txt; do
     if [[ ! -e "$SUPPORT/$f" ]]; then
         install -m 644 -o root -g wheel "$SRC_DIR/config/$f" "$SUPPORT/$f"
         echo "    + $f"

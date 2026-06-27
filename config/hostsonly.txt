@@ -48,7 +48,9 @@ search.yahoo.com
 yahoo.com
 
 # --- DuckDuckGo (everything EXCEPT lite.duckduckgo.com) ---
-duckduckgo.com
+# NOTE: duckduckgo.com itself is in dnsonly.txt, NOT here. lite.duckduckgo.com
+# is a CNAME to duckduckgo.com, so a hosts entry for duckduckgo.com would also
+# break lite. DNS-only blocking keeps lite reachable. Do not move it back here.
 start.duckduckgo.com
 html.duckduckgo.com
 duck.com
