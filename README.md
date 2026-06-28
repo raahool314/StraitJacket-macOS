@@ -12,7 +12,7 @@ notarization, no System Extensions. You build it and install it with a script.
 
 | Layer | Mechanism |
 |-------|-----------|
-| **Domain blocking** | A local **DNS sinkhole** on `127.0.0.1:53` (wildcard/suffix matching, answers blocked names with `0.0.0.0`/`::`, forwards everything else upstream) **plus** a managed block in **`/etc/hosts`**. System DNS is repointed to the sinkhole via `networksetup`. |
+| **Domain blocking** | A local **DNS sinkhole** on `127.0.0.1:53` (exact-name matching — a `www.` variant is added automatically, but subdomains are not implicitly blocked; answers blocked names with `0.0.0.0`/`::`, forwards everything else upstream) **plus** a managed block in **`/etc/hosts`**. System DNS is repointed to the sinkhole via `networksetup`. |
 | **App blocking** | **Filesystem ACLs** denying the child `execute` on blocked app binaries **plus** a **poll-and-kill** loop that `SIGKILL`s blocked processes owned by the child (the backstop for copied/SIP-protected apps). |
 | **Feeds** | Remote blocklists (e.g. StevenBlack's ~77k-domain adult list) downloaded at boot and daily, fed into the DNS sinkhole. |
 | **Browser policy** | A root-owned **Firefox enterprise policy** at `/Applications/Firefox.app/Contents/Resources/distribution/policies.json` blocks the full `duckduckgo.com` UI at the URL layer (with an exception for `lite.duckduckgo.com`) and locks the address-bar default search engine to a custom DDG Lite entry. Needed because macOS `mDNSResponder` chases CNAME targets, so a DNS-layer block on `duckduckgo.com` would also break `lite.duckduckgo.com` — see [docs/browser-policy.md](docs/browser-policy.md). |
