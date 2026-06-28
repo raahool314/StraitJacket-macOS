@@ -27,13 +27,6 @@ public enum Paths {
     public static var appBlockFile: String { "\(supportDir)/appblock.txt" }
     public static var feedsFile: String { "\(supportDir)/feeds.txt" }
 
-    /// Domains blocked at the DNS sinkhole ONLY (never written to /etc/hosts).
-    /// Used for CNAME-collision cases: e.g. lite.duckduckgo.com is a CNAME to
-    /// duckduckgo.com, so a hosts entry for duckduckgo.com would also break
-    /// lite. Sinkholing it (direct query only) blocks the parent while leaving
-    /// the CNAME'd sibling reachable.
-    public static var dnsOnlyFile: String { "\(supportDir)/dnsonly.txt" }
-
     /// Cached union of all feed downloads (one domain per line).
     public static var feedCacheFile: String { "\(supportDir)/feedcache.txt" }
 

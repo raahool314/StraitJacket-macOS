@@ -1,0 +1,30 @@
+{
+  "policies": {
+    "WebsiteFilter": {
+      "Block": [
+        "https://duckduckgo.com/*",
+        "http://duckduckgo.com/*",
+        "https://www.duckduckgo.com/*",
+        "http://www.duckduckgo.com/*"
+      ],
+      "Exceptions": [
+        "https://lite.duckduckgo.com/*"
+      ]
+    },
+    "SearchEngines": {
+      "Default": "DuckDuckGo Lite",
+      "PreventInstalls": true,
+      "Remove": ["Google", "Bing", "DuckDuckGo"],
+      "Add": [
+        {
+          "Name": "DuckDuckGo Lite",
+          "URLTemplate": "https://lite.duckduckgo.com/lite/?q={searchTerms}",
+          "Method": "GET",
+          "IconURL": "https://lite.duckduckgo.com/favicon.ico",
+          "Alias": "ddglite",
+          "Description": "Text-only DuckDuckGo search"
+        }
+      ]
+    }
+  }
+}

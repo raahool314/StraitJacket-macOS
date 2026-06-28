@@ -48,9 +48,12 @@ search.yahoo.com
 yahoo.com
 
 # --- DuckDuckGo (everything EXCEPT lite.duckduckgo.com) ---
-# NOTE: duckduckgo.com itself is in dnsonly.txt, NOT here. lite.duckduckgo.com
-# is a CNAME to duckduckgo.com, so a hosts entry for duckduckgo.com would also
-# break lite. DNS-only blocking keeps lite reachable. Do not move it back here.
+# NOTE: duckduckgo.com itself is intentionally NOT listed anywhere in the DNS
+# layer. lite.duckduckgo.com is a CNAME to duckduckgo.com, and macOS's
+# mDNSResponder chases CNAME targets through its own cache — so ANY block on
+# duckduckgo.com (hosts entry OR sinkhole) will also break lite. The full UI is
+# blocked at the URL layer instead, via the Firefox enterprise policy in
+# config/firefox-policies.json. Do not add duckduckgo.com here.
 start.duckduckgo.com
 html.duckduckgo.com
 duck.com

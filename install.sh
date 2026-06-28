@@ -42,7 +42,7 @@ mkdir -p "$SUPPORT" "$LOGDIR"
 chown root:wheel "$SUPPORT" "$LOGDIR"
 chmod 755 "$SUPPORT" "$LOGDIR"
 # Copy defaults only if absent — never overwrite the parent's edits.
-for f in config.json blocklist.txt hostsonly.txt dnsonly.txt appblock.txt feeds.txt; do
+for f in config.json blocklist.txt hostsonly.txt appblock.txt feeds.txt; do
     if [[ ! -e "$SUPPORT/$f" ]]; then
         install -m 644 -o root -g wheel "$SRC_DIR/config/$f" "$SUPPORT/$f"
         echo "    + $f"
@@ -68,6 +68,20 @@ if [[ -z "$CURRENT_CHILD" || "$CURRENT_CHILD" == "child" ]] || ! id "$CURRENT_CH
     else
         echo "    (skipped — set later with: sudo parentctl set-child <username>)"
     fi
+fi
+
+echo "==> Installing Firefox enterprise policy..."
+# Forces address-bar search to lite.duckduckgo.com and blocks the full UI at the
+# URL layer. We can't do this at DNS — lite is a CNAME to duckduckgo.com and
+# mDNSResponder chases CNAMEs, so sinkholing the parent breaks the sibling.
+FF_APP="/Applications/Firefox.app"
+if [[ -d "$FF_APP" ]]; then
+    FF_DIST="$FF_APP/Contents/Resources/distribution"
+    install -d -m 755 -o root -g wheel "$FF_DIST"
+    install -m 644 -o root -g wheel "$SRC_DIR/config/firefox-policies.json" "$FF_DIST/policies.json"
+    echo "    + $FF_DIST/policies.json"
+else
+    echo "    (Firefox.app not found at $FF_APP — skipping; install Firefox then re-run)"
 fi
 
 echo "==> Installing launchd daemon..."

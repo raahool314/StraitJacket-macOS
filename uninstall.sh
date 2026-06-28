@@ -48,6 +48,9 @@ done < <(networksetup -listallnetworkservices 2>/dev/null)
 dscacheutil -flushcache || true
 killall -HUP mDNSResponder 2>/dev/null || true
 
+echo "==> Removing Firefox enterprise policy..."
+rm -f "/Applications/Firefox.app/Contents/Resources/distribution/policies.json"
+
 echo "==> Removing binaries..."
 rm -f /usr/local/sbin/parentd /usr/local/bin/parentctl
 
