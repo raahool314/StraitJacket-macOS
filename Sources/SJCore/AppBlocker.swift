@@ -81,6 +81,13 @@ public struct AppBlocker {
     // MARK: Layer 1 — ACLs
 
     /// Apply deny-execute ACLs for the child on every resolvable app binary.
+    /// Binaries whose ACL apply already failed once this daemon run, so we warn
+    /// a single time instead of on every reassert cycle. Besides SIP apps, any
+    /// app in /Applications installed from the App Store / a signed installer is
+    /// bundle-protected (App Management) and rejects root chmod (e.g. DuckDuckGo);
+    /// the poll-and-kill layer covers those, so one note is enough.
+    private static var aclFailureWarned: Set<String> = []
+
     public func applyACLs() {
         for app in resolvedAppPaths() {
             guard let bin = Self.executable(inApp: app),
@@ -91,8 +98,11 @@ public struct AppBlocker {
             // /System (the Cryptex), so the prefix check must run on the real path.
             if Self.isSIPProtected(bin) { continue }   // poll-and-kill covers these
             let r = Shell.run("/bin/chmod", ["+a", "user:\(username) deny execute", bin])
-            if !r.ok {
-                Log.warn("chmod ACL failed for \(bin): \(r.stderr.trimmingCharacters(in: .whitespacesAndNewlines))")
+            if r.ok {
+                Self.aclFailureWarned.remove(bin)
+            } else if Self.aclFailureWarned.insert(bin).inserted {
+                Log.warn("chmod ACL failed for \(bin) — relying on poll-and-kill: "
+                    + r.stderr.trimmingCharacters(in: .whitespacesAndNewlines))
             }
         }
     }
