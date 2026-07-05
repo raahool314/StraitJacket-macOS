@@ -63,6 +63,10 @@ Everything lives under `/Library/Application Support/StraitJacket/` (root-owned)
 | `feeds.txt` | Remote blocklist URLs |
 | `firefox-policies.json` *(in `config/`)* | Firefox `WebsiteFilter` + `SearchEngines` policy; installed into `Firefox.app/Contents/Resources/distribution/` by `install.sh` |
 
+The daemon logs to `/Library/Logs/StraitJacket/parentd.log` and prunes it to the
+last **14 days** on every daily housekeeping cycle (and at startup), so the file
+can't grow without bound.
+
 ## Uninstall
 
 ```bash

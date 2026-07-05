@@ -114,6 +114,8 @@ final class EnforcementLoop {
             Log.info("feeds updated: \(n) domains cached")
             if !isPaused() { sinkhole.updateBlocklist(buildDNSBlocklist()) }
         }
+        // Daily housekeeping: trim log history to the retention window.
+        if Log.prune() > 0 { Log.info("log pruned to last \(Log.retentionDays) days") }
     }
 
     // MARK: Lifecycle

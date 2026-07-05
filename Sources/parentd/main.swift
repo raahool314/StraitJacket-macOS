@@ -12,7 +12,11 @@ guard getuid() == 0 else {
     exit(1)
 }
 
+// Take over the log file so we can append and age-prune it ourselves rather
+// than let it grow unbounded under launchd's redirect.
+Log.startFileLogging(path: Paths.daemonLog)
 Log.info("parentd starting (\(Paths.label))")
+if Log.prune() > 0 { Log.info("log pruned to last \(Log.retentionDays) days") }
 
 let config = Config.load()
 
