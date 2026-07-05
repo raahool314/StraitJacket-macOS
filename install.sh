@@ -41,9 +41,14 @@ echo "==> Seeding configuration in $SUPPORT..."
 mkdir -p "$SUPPORT" "$LOGDIR"
 chown root:wheel "$SUPPORT" "$LOGDIR"
 chmod 755 "$SUPPORT" "$LOGDIR"
-# Copy defaults only if absent — never overwrite the parent's edits.
+# Copy defaults only if absent or empty — never overwrite the parent's edits,
+# but a 0-byte seed is a broken install (e.g. seeded before the default existed),
+# not a deliberate edit, so re-seed it.
 for f in config.json blocklist.txt hostsonly.txt appblock.txt feeds.txt; do
-    if [[ ! -e "$SUPPORT/$f" ]]; then
+    if [[ -e "$SUPPORT/$f" && ! -s "$SUPPORT/$f" ]]; then
+        install -m 644 -o root -g wheel "$SRC_DIR/config/$f" "$SUPPORT/$f"
+        echo "    + $f (re-seeded empty)"
+    elif [[ ! -e "$SUPPORT/$f" ]]; then
         install -m 644 -o root -g wheel "$SRC_DIR/config/$f" "$SUPPORT/$f"
         echo "    + $f"
     else
