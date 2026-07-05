@@ -56,10 +56,15 @@ company.thebrowser.Browser
 com.naver.Whale
 ru.yandex.desktop.yandex-browser
 com.coccoc.Coccoc
-com.duckduckgo.macos.browser
 
 # --- Other WebKit-based ---
 com.kagi.kagimacOS
+# DuckDuckGo for Mac is a Catalyst app that reuses the iOS bundle id
+# (com.duckduckgo.mobile.ios) — there is NO com.duckduckgo.macos.browser. The
+# exec-name entry is a Spotlight-independent backstop for the kill layer in case
+# mdfind can't resolve the bundle id (the exec is literally "DuckDuckGo").
+com.duckduckgo.mobile.ios
+DuckDuckGo
 
 # --- Tor Browser (Firefox fork; block by bundle id, NOT exec name) ---
 org.torproject.torbrowser
