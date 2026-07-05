@@ -82,9 +82,22 @@ echo "==> Installing Firefox enterprise policy..."
 FF_APP="/Applications/Firefox.app"
 if [[ -d "$FF_APP" ]]; then
     FF_DIST="$FF_APP/Contents/Resources/distribution"
-    install -d -m 755 -o root -g wheel "$FF_DIST"
-    install -m 644 -o root -g wheel "$SRC_DIR/config/firefox-policies.json" "$FF_DIST/policies.json"
-    echo "    + $FF_DIST/policies.json"
+    # Non-fatal: macOS 13+ forbids writing into another app's bundle unless the
+    # terminal running sudo has App Management permission. Don't let that abort
+    # the rest of the install (daemon still works; only the DDG URL block is lost).
+    if install -d -m 755 -o root -g wheel "$FF_DIST" 2>/dev/null \
+       && install -m 644 -o root -g wheel "$SRC_DIR/config/firefox-policies.json" "$FF_DIST/policies.json" 2>/dev/null; then
+        echo "    + $FF_DIST/policies.json"
+    else
+        echo "    !! Could not write into Firefox.app (Operation not permitted)."
+        echo "       macOS 13+ (Ventura and later) blocks modifying another app's"
+        echo "       bundle unless the terminal running sudo has App Management."
+        echo "       Fix: System Settings > Privacy & Security > App Management,"
+        echo "            enable your terminal (Terminal/iTerm), fully quit it"
+        echo "            (Cmd-Q), reopen, and re-run: sudo ./install.sh"
+        echo "       Everything else installs fine; only the Firefox URL-layer"
+        echo "       DuckDuckGo block is skipped until this step succeeds."
+    fi
 else
     echo "    (Firefox.app not found at $FF_APP — skipping; install Firefox then re-run)"
 fi
