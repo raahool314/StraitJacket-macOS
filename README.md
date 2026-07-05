@@ -1,7 +1,7 @@
 # StraitJacket for macOS
 
 A tamper-resistant **parental-control daemon for macOS**, modeled on the Windows
-[StraitJacket](https://github.com/raahool007/StraitJacket). It blocks domains and
+[StraitJacket](https://github.com/raahool314/StraitJacket). It blocks domains and
 apps for a child's account from a root `launchd` daemon that auto-restarts and
 re-applies its policy on a timer, so a Standard (non-admin) user can't disable it.
 
