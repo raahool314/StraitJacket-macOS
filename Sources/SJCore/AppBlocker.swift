@@ -71,14 +71,25 @@ public struct AppBlocker {
         return "\(appPath)/Contents/MacOS/\(exec)"
     }
 
+    /// True if `path` lives under `/System` once symlinks/firmlinks are resolved,
+    /// i.e. it's SIP-protected and can't be ACL'd (e.g. Safari via its Cryptex).
+    public static func isSIPProtected(_ path: String) -> Bool {
+        let resolved = URL(fileURLWithPath: path).resolvingSymlinksInPath().path
+        return resolved.hasPrefix("/System/")
+    }
+
     // MARK: Layer 1 — ACLs
 
     /// Apply deny-execute ACLs for the child on every resolvable app binary.
     public func applyACLs() {
         for app in resolvedAppPaths() {
-            if app.hasPrefix("/System/") { continue }   // SIP-protected
             guard let bin = Self.executable(inApp: app),
                   FileManager.default.fileExists(atPath: bin) else { continue }
+            // Skip SIP-protected binaries — chmod can't touch them, so attempting
+            // it just fails on every cycle. Resolve symlinks first: Spotlight
+            // reports Safari as /Applications/Safari.app, but that firmlinks into
+            // /System (the Cryptex), so the prefix check must run on the real path.
+            if Self.isSIPProtected(bin) { continue }   // poll-and-kill covers these
             let r = Shell.run("/bin/chmod", ["+a", "user:\(username) deny execute", bin])
             if !r.ok {
                 Log.warn("chmod ACL failed for \(bin): \(r.stderr.trimmingCharacters(in: .whitespacesAndNewlines))")
@@ -91,6 +102,7 @@ public struct AppBlocker {
         for app in resolvedAppPaths() {
             guard let bin = Self.executable(inApp: app),
                   FileManager.default.fileExists(atPath: bin) else { continue }
+            if Self.isSIPProtected(bin) { continue }   // never had an ACL to remove
             Shell.run("/bin/chmod", ["-a", "user:\(username) deny execute", bin])
         }
     }
