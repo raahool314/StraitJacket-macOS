@@ -70,6 +70,14 @@ DuckDuckGo
 org.torproject.torbrowser
 
 # ============================================================
+# Apple App Store — SIP-protected, so kill-only (like Safari).
+# Blocks the child from installing new browsers/apps to sidestep this
+# blocklist. Does not stop direct .dmg downloads (those go through the
+# filtered Firefox), only the App Store front end.
+# ============================================================
+com.apple.AppStore
+
+# ============================================================
 # Other apps (examples — uncomment / add as needed)
 # ============================================================
 # com.valvesoftware.steam
